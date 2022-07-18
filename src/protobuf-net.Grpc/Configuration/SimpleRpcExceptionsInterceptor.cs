@@ -98,18 +98,19 @@ namespace ProtoBuf.Grpc.Configuration
                 status = default;
                 return false;
             }
-            status = new Status(exception switch
+            status = new(exception switch
             {
 #pragma warning disable IDE0059 // needs more recent compiler than the CI server has
-                OperationCanceledException a => StatusCode.Cancelled,
-                ArgumentException b => StatusCode.InvalidArgument,
-                NotImplementedException c => StatusCode.Unimplemented,
-                NotSupportedException d => StatusCode.Unimplemented,
-                SecurityException e => StatusCode.PermissionDenied,
-                EndOfStreamException f => StatusCode.OutOfRange,
-                FileNotFoundException g => StatusCode.NotFound,
-                DirectoryNotFoundException h => StatusCode.NotFound,
-                TimeoutException i => StatusCode.DeadlineExceeded,
+                TaskCanceledException => StatusCode.Cancelled,
+                OperationCanceledException => StatusCode.Cancelled,
+                ArgumentException => StatusCode.InvalidArgument,
+                NotImplementedException => StatusCode.Unimplemented,
+                NotSupportedException => StatusCode.Unimplemented,
+                SecurityException => StatusCode.PermissionDenied,
+                EndOfStreamException => StatusCode.OutOfRange,
+                FileNotFoundException => StatusCode.NotFound,
+                DirectoryNotFoundException => StatusCode.NotFound,
+                TimeoutException => StatusCode.DeadlineExceeded,
 #pragma warning restore IDE0059 // needs more recent compiler than the CI server has
                 _ => StatusCode.Unknown,
             }, exception.Message, exception);
